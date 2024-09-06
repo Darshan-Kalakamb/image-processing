@@ -1,0 +1,49 @@
+import cv2
+import numpy as np
+
+# Load an image from file
+image = cv2.imread('images/input.jpg')
+
+# Function to convert image to grayscale
+def convert_to_grayscale(image):
+    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Function to resize the image
+def resize_image(image, scale_percent):
+    width = int(image.shape[1] * scale_percent / 100)
+    height = int(image.shape[0] * scale_percent / 100)
+    return cv2.resize(image, (width, height), interpolation=cv2.INTER_AREA)
+
+# Function to apply Gaussian Blur
+def apply_gaussian_blur(image, kernel_size=(5, 5)):
+    return cv2.GaussianBlur(image, kernel_size, 0)
+
+# Function for edge detection using Canny
+def apply_canny_edge_detection(image, lower_threshold, upper_threshold):
+    return cv2.Canny(image, lower_threshold, upper_threshold)
+
+# Display original image
+cv2.imshow('Original Image', image)
+
+# Convert to grayscale and display
+grayscale_image = convert_to_grayscale(image)
+cv2.imshow('Grayscale Image', grayscale_image)
+
+# Resize image by 50% and display
+resized_image = resize_image(image, 50)
+cv2.imshow('Resized Image', resized_image)
+
+# Apply Gaussian Blur and display
+blurred_image = apply_gaussian_blur(image)
+cv2.imshow('Blurred Image', blurred_image)
+
+# Apply Canny edge detection and display
+edges_image = apply_canny_edge_detection(grayscale_image, 100, 200)
+cv2.imshow('Edges Image', edges_image)
+
+# Save the edge-detected image
+cv2.imwrite('images/output.jpg', edges_image)
+
+# Wait until a key is pressed
+cv2.waitKey(0)
+cv2.destroyAllWindows()
